@@ -1,154 +1,147 @@
 # EstateFlow
 
-EstateFlow is a Laravel 10 real-estate listing and administration platform built as a professional portfolio project. It includes a professional public website, advanced property search, map-style listing mode, property comparison, buyer accounts, saved searches, favourites, viewing requests, CRM-ready inquiry tracking, agent profiles, a secure staff dashboard, admin and agent roles, property CRUD, image galleries, filtering, pagination, JSON API endpoints, validation, policies, seed data, and feature tests.
+EstateFlow is a professional real-estate discovery and listing management platform built with Laravel. It combines a polished public property website, client account features, staff inventory management, lead tracking, and a RAG-powered property assistant that helps visitors find suitable homes.
 
-## Stack
+## Overview
 
-- Laravel 10 on PHP 8.1
-- Laravel Breeze with Blade templates
-- Tailwind CSS, Alpine.js, and Vite
-- MySQL with Eloquent ORM
-- Form Requests, Policies, API Resources, factories, seeders, and PHPUnit tests
+EstateFlow is designed for agencies, property teams, and real-estate businesses that need a complete web presence with operational tools behind it. Visitors can browse listings, search by location and property details, view property pages, save homes, request viewings, and contact listing teams. Staff users can manage inventory, agents, inquiries, and viewing requests from a secured dashboard.
 
-## User-Facing Features
+## Core Features
 
-- Public homepage with featured real-estate listings
-- Professional homepage with search, featured listings, latest listings, city/type sections, sale/rental sections, reduced listings, open houses, agent highlights, CTA, and footer contact details
-- Advanced property catalog with keyword, reference number, city, area/neighbourhood, type, sale/rent, price, bedrooms, bathrooms, area, amenities, furnishing, featured, open-house, recently-added, price-reduced, sorting, pagination, active chips, and clear-all filters
-- Desktop filter sidebar, mobile filter drawer, grid/list/map-style result views, result count, URL-preserved filters, and saved-search support
-- Different image galleries for seeded demo properties
-- Save-to-shortlist interaction stored in the visitor's browser
-- Logged-in buyer favourites stored in MySQL
-- Property comparison for two to four listings
-- Property detail pages with image thumbnails, feature tags, amenities, location details, map coordinates, video-tour link, virtual-tour link, print brochure action, agent contact information, and payment or move-in estimate calculator
-- Public inquiry form that stores buyer or renter leads in MySQL with CRM metadata and activity history
-- Viewing-request workflow for in-person or virtual viewing requests
-- Public agent profile pages with biography, contact details, languages, specialities, service areas, office information, and active listings
+- Public homepage with hero search, featured listings, city/type browsing, sale and rental sections, open houses, and recently reduced listings
+- Property catalog with keyword, city, area, type, sale/rent, price, bedroom, bathroom, furnishing, amenity, featured, open-house, price-drop, and sorting filters
+- Property detail pages with image galleries, pricing, location, amenities, agent information, payment or move-in estimate, viewing requests, and inquiry forms
+- Client accounts for saved properties, saved searches, viewing request history, and recently viewed listings
+- Staff dashboard for property metrics, new leads, pending viewings, and recent listing activity
+- Admin property management with rich listing fields, image upload/URL support, publishing status, open-house data, virtual tour links, amenities, and price history tracking
+- Agent management with role-based access for admins and assigned listing control for agents
+- Lead center for public property inquiries and viewing requests
+- JSON property API for listing and detail data
+- Bottom-right EstateFlow Assistant with retrieval-grounded guidance, property recommendations, and direct property detail links
 
-## Buyer Account Features
+## EstateFlow Assistant
 
-- Buyer registration at `/buyer/register`
-- Buyer dashboard at `/buyer/dashboard`
-- Saved properties
-- Saved searches
-- Viewing request history
-- Recently viewed listings
-- Profile and password management through Breeze
+The built-in assistant is available on public-facing pages as a bottom-right chat widget. It uses a retrieval-augmented workflow so answers are grounded in public EstateFlow information and published listings.
 
-## Admin Features
+It helps visitors:
 
-- Secure Breeze authentication with public registration disabled
-- Admin dashboard with listing metrics and recent inventory
-- Admin property CRUD with validation, publishing status, featured listings, image URL support, and image upload support
-- Admin agent management
-- Agent role access limited to assigned properties
-- Price-history records when listing prices change
-- Professional property fields including reference number, area, neighbourhood, amenities, furnishing status, year built, coordinates, open-house dates, reduced-price flag, availability, video URL, virtual-tour URL, approval status, internal notes, and listing expiry fields
-- Settings table for configurable contact, social, SEO, and business details
+- Ask how the website works
+- Find properties by city, budget, listing type, home type, and bedrooms
+- Receive direct links to matching property detail pages from the live catalog
+- Understand saved homes, viewing requests, and inquiry workflows
+- Discover featured homes, rentals, and sale listings
 
-## Local Configuration
+The assistant is scoped to real-estate and EstateFlow usage only. It retrieves published listing data and public workflow guidance, sends only that safe context to Gemini, rejects unrelated or sensitive prompts, and never exposes credentials, server configuration, private user data, database structure, or admin-only records.
 
-The application is configured for:
+## User Roles
 
-- Database: `estate_flow`
-- Username: `root`
-- Password: `admin123`
+EstateFlow supports three primary role types:
 
-The seeded staff accounts are:
+- Clients: browse listings, save homes, save searches, request viewings, and manage account activity
+- Agents: manage assigned listings and view assigned leads
+- Admins: manage properties, agents, leads, and platform inventory
 
-- Admin: `admin@estateflow.test` / `password`
-- Agent: `nora@estateflow.test` / `password`
-- Agent: `evan@estateflow.test` / `password`
-- Agent: `lena@estateflow.test` / `password`
-- Buyer: `buyer@estateflow.test` / `password`
+Public staff registration is disabled. Client registration is available through the account flow, while staff accounts are managed by administrators.
 
-Public staff registration is disabled. Buyers can register through the buyer registration page, while staff users are created by admins.
+## Technology Stack
 
-## Main URLs
+- Laravel 10
+- PHP 8.1+
+- MySQL
+- Blade templates
+- Laravel Breeze authentication
+- Tailwind CSS
+- Alpine.js
+- Vite
+- Eloquent ORM
+- Gemini API for the retrieval-grounded assistant
+- PHPUnit feature tests
 
-- Public home: `/`
-- Public properties: `/properties`
-- Property comparison: `/properties/compare/list`
-- Buyer registration: `/buyer/register`
-- Buyer dashboard: `/buyer/dashboard`
-- Staff login: `/login`
-- Dashboard: `/dashboard`
-- Admin properties: `/admin/properties`
-- Admin agents: `/admin/agents`
+## Main Pages
 
-## Stored Data
+- `/` - Public homepage
+- `/properties` - Property search and listing catalog
+- `/properties/{slug}` - Property detail page
+- `/account/register` - Client registration
+- `/buyer/dashboard` - Client saved activity
+- `/login` - Client login
+- `/admin/login` - Staff login
+- `/dashboard` - Staff dashboard
+- `/admin/properties` - Property management
+- `/admin/agents` - Agent management
+- `/admin/leads` - Inquiries and viewing requests
 
-EstateFlow stores users, properties, property images, favourites, saved searches, property views, comparisons, viewing requests, notification preferences, price histories, password reset tokens, API tokens, failed jobs, settings, lead sources, property inquiries, inquiry notes, inquiry activities, and inquiry tags in MySQL. Public inquiry submissions are saved in the `property_inquiries` table and linked to the selected property.
-
-## API
-
-All API responses are JSON and use Laravel pagination metadata where applicable.
+## API Endpoints
 
 ### List Properties
 
-`GET /api/properties`
-
-Supported query parameters:
-
-- `search`: title, address, or city search
-- `reference_number`: listing reference search
-- `type`: `House`, `Apartment`, `Condo`, `Townhome`, `Studio`, `Land`
-- `listing_type`: `For Sale` or `For Rent`
-- `city`: exact city match
-- `area`: area or neighbourhood search
-- `min_price`: minimum price
-- `max_price`: maximum price
-- `bedrooms`: minimum bedrooms
-- `bathrooms`: minimum bathrooms
-- `min_area`: minimum square footage
-- `furnishing_status`: furnishing filter
-- `featured`: featured listings
-- `open_house`: listings with open-house dates
-- `price_reduced`: recently reduced listings
-- `recently_added`: listings published in the last 14 days
-- `amenities[]`: amenity filters
-
-Example:
-
 ```http
-GET /api/properties?city=Austin&listing_type=For%20Sale
+GET /api/properties
 ```
+
+Supports filtering by search, property type, listing type, city, price range, and bedrooms.
 
 ### Show Property
 
-`GET /api/properties/{slug}`
-
-Example:
-
 ```http
-GET /api/properties/cedar-ridge-family-home
+GET /api/properties/{slug}
 ```
 
-Response fields include property details, pricing, location, features, agent contact details, and image URLs.
+Returns property details, pricing, images, location data, and listing agent information.
 
-## Development Commands
+## Local Setup
+
+Create a local `.env` file from `.env.example`, configure the database values for your environment, then run:
 
 ```bash
 composer install
 npm install
+php artisan key:generate
 php artisan migrate:fresh --seed
 php artisan storage:link
 npm run build
-php artisan test
-./vendor/bin/pint
 php artisan serve
 ```
 
-## Features Covered By Tests
+To enable the assistant, add a Gemini API key to the local `.env` file:
 
-- Public homepage and property filtering
-- Buyer dashboard favourites
-- Property comparison session handling
-- Viewing request storage
-- Public registration disabled
-- Admin property creation and image recording
-- Public inquiry storage
-- Agent authorization boundaries
-- Admin agent creation
-- JSON API listing and detail endpoints
-- Breeze login, password reset, profile, and verification flows
+```env
+GEMINI_API_KEY=your-local-key
+GEMINI_MODEL=gemini-flash-latest
+```
+
+Keep production keys in environment variables or deployment secrets. Do not commit API keys, database credentials, or staff credentials to the repository.
+
+For development with live asset rebuilding:
+
+```bash
+npm run dev
+```
+
+## Testing
+
+Run the automated test suite with:
+
+```bash
+php artisan test
+```
+
+The tests cover public property browsing, filtering, client workflows, viewing requests, property inquiries, staff authorization, admin property management, agent management, API responses, authentication, and the EstateFlow Assistant guardrails.
+
+## Project Structure
+
+- `app/Http/Controllers` - Public, client, admin, API, auth, and assistant controllers
+- `app/Models` - Users, properties, images, saved searches, favorites, inquiries, leads, viewings, and settings
+- `app/Services` - Retrieval-grounded assistant services and application-level support logic
+- `resources/views` - Blade templates and reusable UI components
+- `resources/js` - Alpine.js and browser interaction logic
+- `resources/css` - Tailwind CSS entry point and base styling
+- `routes/web.php` - Public, client, staff, and chatbot routes
+- `routes/api.php` - JSON API routes
+- `database/migrations` - Database schema
+- `database/seeders` - Demo data for local development
+- `tests/Feature` - End-to-end feature coverage
+
+## Quality Notes
+
+EstateFlow uses role-based access control, form request validation, route model binding, Eloquent relationships, seeded demo records, responsive Blade views, assistant prompt guardrails, and automated tests to keep the application reliable and maintainable.

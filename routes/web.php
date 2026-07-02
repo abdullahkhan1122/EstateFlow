@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Buyer\DashboardController as BuyerDashboardController;
 use App\Http\Controllers\Buyer\FavoriteController;
 use App\Http\Controllers\Buyer\SavedSearchController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyInquiryController;
 use App\Http\Controllers\Public\AgentProfileController;
@@ -19,6 +20,7 @@ Route::get('/', [PublicPropertyController::class, 'home'])->name('home');
 Route::get('/properties', [PublicPropertyController::class, 'index'])->name('properties.index');
 Route::get('/properties/{property:slug}', [PublicPropertyController::class, 'show'])->name('properties.show');
 Route::get('/agents/{agent}', [AgentProfileController::class, 'show'])->name('agents.show');
+Route::post('/chatbot/message', ChatbotController::class)->name('chatbot.message');
 Route::middleware('guest')->group(function () {
     Route::get('/account/register', [RegisteredUserController::class, 'create'])->name('buyer.register');
     Route::post('/account/register', [RegisteredUserController::class, 'store'])->name('buyer.register.store');
